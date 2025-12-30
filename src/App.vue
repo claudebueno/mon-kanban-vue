@@ -14,7 +14,7 @@
     </main>
 
     <footer>
-      <p>Vue.js — Formation Chapitre 5</p>
+      <p>Vue.js — Formation Chapitre 6</p>
     </footer>
   </div>
 </template>
