@@ -3,15 +3,45 @@
   <div class="app">
     <header>
       <h1>Mon gestionnaire de tâches</h1>
-      <p>Chapitre 3 : Réactivité et gestion d’état</p>
+      <p>Chapitre 4 : Gestion des événements et formulaires</p>
     </header>
 
     <main>
+      <!-- Formulaire d'ajout -->
+      <form @submit.prevent="addTask" class="task-form">
+        <div class="form-group">
+          <label for="title">Titre de la tâche</label>
+          <input
+            id="title"
+            v-model="newTaskTitle"
+            placeholder="Ex: Apprendre Vue.js"
+            required
+            class="input-field"
+            :class="{ 'error': titleError }"
+          />
+          <p v-if="titleError" class="error-message">{{ titleError }}</p>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description (optionnelle)</label>
+          <textarea
+            id="description"
+            v-model="newTaskDescription"
+            placeholder="Décrivez la tâche..."
+            class="textarea-field"
+          ></textarea>
+        </div>
+
+        <button type="submit">Ajouter la tâche</button>
+      </form>
+
+      <!-- Statistiques -->
       <div class="stats">
         <p><strong>Total :</strong> {{ tasks.length }}</p>
         <p><strong>Terminées :</strong> {{ doneTasks.length }}</p>
       </div>
 
+      <!-- Liste des tâches -->
       <div class="task-list">
         <TaskCard 
           v-for="task in tasks" 
@@ -24,7 +54,7 @@
     </main>
 
     <footer>
-      <p>Vue.js — Formation Chapitre 3</p>
+      <p>Vue.js — Formation Chapitre 4</p>
     </footer>
   </div>
 </template>
@@ -33,7 +63,12 @@
 import { ref, computed } from 'vue'
 import TaskCard from './components/TaskCard.vue'
 
-// Tableau de tâches réactif
+// États du formulaire
+const newTaskTitle = ref('')
+const newTaskDescription = ref('')
+const titleError = ref('')
+
+// Tableau de tâches
 const tasks = ref([
   { id: 1, title: 'Créer le composant TaskCard', description: 'Chapitre 2', status: 'done' },
   { id: 2, title: 'Gérer l’état avec ref()', description: 'Chapitre 3', status: 'todo' },
@@ -44,6 +79,31 @@ const tasks = ref([
 const doneTasks = computed(() => {
   return tasks.value.filter(task => task.status === 'done')
 })
+
+// Fonction d'ajout de tâche
+function addTask() {
+  const trimmedTitle = newTaskTitle.value.trim()
+  
+  if (trimmedTitle === '') {
+    titleError.value = 'Le titre ne peut pas être vide !'
+    return
+  }
+
+  // Réinitialiser l'erreur
+  titleError.value = ''
+
+  // Ajouter la tâche
+  tasks.value.push({
+    id: Date.now(), // ID unique
+    title: trimmedTitle,
+    description: newTaskDescription.value.trim(),
+    status: 'todo'
+  })
+
+  // Réinitialiser les champs
+  newTaskTitle.value = ''
+  newTaskDescription.value = ''
+}
 </script>
 
 <style scoped>
@@ -67,15 +127,66 @@ header p {
   font-size: 0.9rem;
 }
 
+.task-form {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.input-field, .textarea-field {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.input-field.error {
+  border-color: #e74c3c;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0 0;
+}
+
+button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #42b983;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #2ecc71;
+}
+
 .stats {
   background: #f0f0f0;
-  color: #3e2aac;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
   display: flex;
   gap: 1rem;
   justify-content: space-between;
+  color: black;
 }
 
 .task-list {
