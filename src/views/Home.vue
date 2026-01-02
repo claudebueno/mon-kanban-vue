@@ -4,16 +4,16 @@
     <h2>Accueil</h2>
 
     <!-- Formulaire d'ajout -->
-    <form @submit.prevent="addTask" class="task-form">
+    <form class="task-form" @submit.prevent="addTask">
       <div class="form-group">
         <label for="title">Titre de la tâche</label>
         <input
-          id="title"
-          v-model="newTaskTitle"
-          placeholder="Ex: Apprendre Vue.js"
-          required
-          class="input-field"
-          :class="{ 'error': titleError }"
+            id="title"
+            v-model="newTaskTitle"
+            :class="{ 'error': titleError }"
+            class="input-field"
+            placeholder="Ex: Apprendre Vue.js"
+            required
         />
         <p v-if="titleError" class="error-message">{{ titleError }}</p>
       </div>
@@ -21,10 +21,10 @@
       <div class="form-group">
         <label for="description">Description (optionnelle)</label>
         <textarea
-          id="description"
-          v-model="newTaskDescription"
-          placeholder="Décrivez la tâche..."
-          class="textarea-field"
+            id="description"
+            v-model="newTaskDescription"
+            class="textarea-field"
+            placeholder="Décrivez la tâche..."
         ></textarea>
       </div>
 
@@ -39,22 +39,22 @@
 
     <!-- Liste des tâches -->
     <div class="task-list">
-      <TaskCard 
-        v-for="task in taskStore.tasks" 
-        :key="task.id"
-        :title="task.title"
-        :description="task.description"
-        :status="task.status"
-        @click="goToTask(task.id)"
+      <TaskCard
+          v-for="task in taskStore.tasks"
+          :key="task.id"
+          :description="task.description"
+          :status="task.status"
+          :title="task.title"
+          @click="goToTask(task.id)"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useTaskStore } from '../stores/tasks'
+import {ref} from 'vue'
+import {useRouter} from 'vue-router'
+import {useTaskStore} from '../stores/tasks'
 import TaskCard from '../components/TaskCard.vue'
 
 const router = useRouter()
@@ -68,7 +68,7 @@ const titleError = ref('')
 // Fonction d'ajout de tâche
 function addTask() {
   const trimmedTitle = newTaskTitle.value.trim()
-  
+
   if (trimmedTitle === '') {
     titleError.value = 'Le titre ne peut pas être vide !'
     return
@@ -84,7 +84,7 @@ function addTask() {
 
 // Navigation vers la page de détail
 function goToTask(id) {
-  router.push({ name: 'TaskDetail', params: { id } })
+  router.push({name: 'TaskDetail', params: {id}})
 }
 </script>
 

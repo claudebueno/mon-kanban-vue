@@ -4,13 +4,14 @@
     <header>
       <h1>Mon gestionnaire de tâches</h1>
       <nav>
-        <router-link to="/">Accueil</router-link> |
+        <router-link to="/">Accueil</router-link>
+        |
         <router-link to="/task/1">Voir tâche 1</router-link>
       </nav>
     </header>
 
     <main>
-      <router-view />
+      <router-view/>
     </main>
 
     <footer>
@@ -31,7 +32,7 @@
   padding: 2rem;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header {
